@@ -17,4 +17,9 @@ public class UserServiceImpl implements UserService {
 	public List<User> queryAll() {
 		return userdao.queryAll();
 	}
+
+	public User query4login(User user) {
+		// TODO Auto-generated method stub
+		return userdao.query4login(user);
+	}
 }
