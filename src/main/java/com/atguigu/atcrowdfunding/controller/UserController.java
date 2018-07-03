@@ -22,14 +22,20 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	@RequestMapping("/add")
+	public String add() {
+		return "user/add";
+	}
+
 	@ResponseBody
 	@RequestMapping("/pageQuery")
-	public Object pageQuery(Integer pageno, Integer pagesize) {
+	public Object pageQuery(String queryText, Integer pageno, Integer pagesize) {
 		AjaxResult result = new AjaxResult();
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("start", (pageno - 1) * pagesize);
 			map.put("size", pagesize);
+			map.put("queryText", queryText);
 			List<User> users = userService.pageQueryData(map);
 			int totalsize = userService.pageQueryCount(map);
 			int totalno = 0;
