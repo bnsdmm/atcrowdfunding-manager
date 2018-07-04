@@ -1,9 +1,12 @@
 package com.atguigu.atcrowdfunding.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +18,30 @@ import com.atguigu.atcrowdfunding.bean.AjaxResult;
 import com.atguigu.atcrowdfunding.bean.Page;
 import com.atguigu.atcrowdfunding.bean.User;
 import com.atguigu.atcrowdfunding.service.UserService;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 	@Autowired
 	private UserService userService;
+
+	@ResponseBody
+	@RequestMapping("/insert")
+	public Object insertUser(User user) {
+		AjaxResult result = new AjaxResult();
+		try {
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			user.setCreatetime(sdf.format(new Date()));
+			user.setUserpswd("123456");
+			userService.insertUser(user);
+			result.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setSuccess(false);
+		}
+		return result;
+	}
 
 	@RequestMapping("/add")
 	public String add() {
@@ -40,7 +61,7 @@ public class UserController {
 			int totalsize = userService.pageQueryCount(map);
 			int totalno = 0;
 			if (totalsize % pagesize == 0) {
-				totalsize = totalsize / pagesize;
+				totalno = totalsize / pagesize;
 			} else {
 				totalno = totalsize / pagesize + 1;
 			}
@@ -49,6 +70,7 @@ public class UserController {
 			userPage.setDatas(users);
 			userPage.setTotalno(totalno);
 			userPage.setTotalsize(totalsize);
+			userPage.setPageno(pageno);
 			result.setData(userPage);
 			result.setSuccess(true);
 		} catch (Exception e) {

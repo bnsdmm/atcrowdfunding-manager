@@ -33,4 +33,8 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userDaoao.pageQueryCount(map);
 	}
+
+	public void insertUser(User user) {
+		userDaoao.insertUser(user);
+	}
 }
