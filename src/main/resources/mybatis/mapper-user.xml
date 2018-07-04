@@ -9,6 +9,7 @@
 				and loginacct like concat('%',#{queryText},'%')
 			</if>
 		</where>
+		order by createtime desc
 		limit #{start},#{size}
 	</select>
 	<select id="pageQueryCount" resultType="int">
@@ -20,4 +21,10 @@
 			</if>
 		</where>
 	</select>
+	<insert id="insertUser">
+		insert into t_user(
+		loginacct,username,userpswd,email,createtime
+		) value(
+		#{loginacct},#{username},#{userpswd},#{email},#{createtime})
+	</insert>
 </mapper>
